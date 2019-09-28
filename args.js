@@ -40,9 +40,9 @@ const parse =  (schema, args) => {
 		getSchema() {
 			return parsedSchema;
 		},
-		getParsedArgs() {
-			return parsedArgs;
-		},
+		// getParsedArgs() {
+		// 	return parsedArgs;
+		// },
 		getBoolean(p) {
 			return parsedArgs[p] === 'true';
 		},
