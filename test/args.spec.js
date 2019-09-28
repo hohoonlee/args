@@ -5,6 +5,7 @@ const argv = [
 	'/usr/local/Cellar/node@10/10.16.3/bin/node',
 	'/Users/hohoonlee/study/args/args.js',
 	'-l',
+	'true',
 	'-p',
 	'300',
 	'-d',
@@ -23,9 +24,19 @@ describe('args test!',  () => {
 		assert.equal('array', 	schema['b']);
 	});
 
-	it('boolean test', ()=>{
+	it('정상 값 확인', ()=>{
 		assert.equal(true,		parsedArgs.getBoolean('l'));
 		assert.equal(300,		parsedArgs.getInt('p'));
 		assert.equal('test',	parsedArgs.getString('d'));
+	});
+
+	
+	it('오류 상황 확인', ()=>{
+		assert.throws(() => {
+			args('p#,d*,a##,b[*]', argv);
+		});
+		assert.throws(() => {
+			args('p#,d**,a##,b[*]', argv);
+		});
 	});
 });

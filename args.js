@@ -11,6 +11,8 @@ const parseSchema = schema => {
 	return _.reduce(schema.split(','), (m, v)=>{
 		const key = v.substring(0,1);
 		const val = v.substring(1);
+		if(!types[val]) throw new Error(`Unknown pattern (${val})`);
+
 		m[key] = types[val];
 		return m;
 	}, {});
@@ -22,8 +24,10 @@ const parseArgument = (parsedSchema, args) => {
 		if(!val.startsWith('-')) return;
 
 		const key 	= val.substring(1);
-		const type 	= types[key]; 
-		result[key] = (type === 'boolean')?true:all[index+1];
+		const type 	= parsedSchema[key]; 
+		if(!type) throw new Error(`Not Found schema for ${key}`);
+
+		result[key] = all[index+1];
 	});
 	return result;
 };
@@ -31,6 +35,7 @@ const parseArgument = (parsedSchema, args) => {
 const parse =  (schema, args) => {
 	const parsedSchema 	= parseSchema(schema);
 	const parsedArgs	= parseArgument(parsedSchema, args);
+	
 	return {
 		getSchema() {
 			return parsedSchema;
@@ -39,7 +44,7 @@ const parse =  (schema, args) => {
 			return parsedArgs;
 		},
 		getBoolean(p) {
-			return !!parsedArgs[p];
+			return parsedArgs[p] === 'true';
 		},
 		getInt(p) {
 			return parseInt(parsedArgs[p], 10);
@@ -51,8 +56,8 @@ const parse =  (schema, args) => {
 			return parsedArgs[p];
 		}
 	};
-}
+};
 
 module.exports = parse;
 
-console.log(parse('l,p#,d*,a##,b[*]', process.argv).getParsedArgs());
+// console.log(parse('l,p#,d*,a##,b[*]', process.argv).getParsedArgs());
