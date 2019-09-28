@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-	  "test": "npx nyc mocha"
+	  "test": "npx nyc mocha",
+	  "report": "npx nyc report --reporter=html"
   },
   "devDependencies": {
     "istanbul": "^0.4.5",

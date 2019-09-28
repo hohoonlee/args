@@ -9,7 +9,13 @@ const argv = [
 	'-p',
 	'300',
 	'-d',
-	'test' 
+	'test',
+	'-a',
+	4.5,
+	'-b',
+	'a',
+	'b',
+	'c'
 ];
 
 describe('args test!',  () => {
@@ -25,13 +31,34 @@ describe('args test!',  () => {
 	});
 
 	it('정상 값 확인', ()=>{
-		assert.equal(true,		parsedArgs.getBoolean('l'));
-		assert.equal(300,		parsedArgs.getInt('p'));
-		assert.equal('test',	parsedArgs.getString('d'));
+		assert.equal(true,				parsedArgs.getBoolean('l'));
+		assert.equal(300,				parsedArgs.getInt('p'));
+		assert.equal('test',			parsedArgs.getString('d'));
+		assert.equal(4.5,				parsedArgs.getFloat('a'));
+		assert.deepEqual(['a','b', 'c'],	parsedArgs.getArray('b'));
 	});
 
+	it('사용법 확인', ()=>{
+		assert.equal('-l [boolean] -p [int] -d [string] -a [float] -b [array]', parsedArgs.useage());
+	});
 	
 	it('오류 상황 확인', ()=>{
+		assert.throws(() => {
+			parsedArgs.getArray('l');
+		});	
+		assert.throws(() => {
+			parsedArgs.getBoolean('p');
+		});	
+		assert.throws(() => {
+			parsedArgs.getInt('d');
+		});	
+		assert.throws(() => {
+			parsedArgs.getString('a');
+		});	
+		assert.throws(() => {
+			parsedArgs.getFloat('b');
+		});	
+
 		assert.throws(() => {
 			args('p#,d*,a##,b[*]', argv);
 		});
