@@ -1,0 +1,12 @@
+{
+  "name": "args",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^6.2.0"
+  },
+  "dependencies": {
+    "underscore": "^1.9.1"
+  }
+}
